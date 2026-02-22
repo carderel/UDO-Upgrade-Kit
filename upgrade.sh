@@ -4,7 +4,7 @@
 
 set -e
 
-REPO_URL="https://github.com/carderel/UDO-No-Script"
+REPO_URL="https://github.com/carderel/UDO-No-Script-Complete"
 MANIFEST_URL="https://raw.githubusercontent.com/carderel/UDO-Upgrade-Kit/main/MANIFEST.json"
 TEMP_DIR=$(mktemp -d)
 GREEN='\033[0;32m'
@@ -52,7 +52,7 @@ echo "Downloading latest version..."
 cd "$TEMP_DIR"
 curl -fsSL "$REPO_URL/archive/refs/heads/main.zip" -o latest.zip
 unzip -q latest.zip
-LATEST_PATH="$TEMP_DIR/UDO-No-Script-main/UDO"
+LATEST_PATH="$TEMP_DIR/UDO-No-Script-Complete-main/UDO"
 
 if [ ! -d "$LATEST_PATH" ]; then
     echo -e "${RED}Error: Could not find UDO folder in downloaded archive${NC}"

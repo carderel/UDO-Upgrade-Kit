@@ -4,7 +4,7 @@ Smart upgrade tool for UDO installations. Safely updates system files while pres
 
 ## What It Does
 
-1. Downloads the latest UDO from UDO-No-Script repo
+1. Downloads the latest UDO from UDO-No-Script-Complete repo
 2. Compares your local files with the latest version
 3. Shows you exactly what will be added, updated, or preserved
 4. Creates a backup before making changes

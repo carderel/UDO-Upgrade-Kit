@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = "Stop"
 
-$REPO_URL = "https://github.com/carderel/UDO-No-Script"
+$REPO_URL = "https://github.com/carderel/UDO-No-Script-Complete"
 $MANIFEST_URL = "https://raw.githubusercontent.com/carderel/UDO-Upgrade-Kit/main/MANIFEST.json"
 
 Write-Host ""
@@ -42,7 +42,7 @@ $zipPath = Join-Path $TEMP_DIR "latest.zip"
 Invoke-WebRequest -Uri "$REPO_URL/archive/refs/heads/main.zip" -OutFile $zipPath -UseBasicParsing
 Expand-Archive -Path $zipPath -DestinationPath $TEMP_DIR
 
-$LATEST_PATH = Join-Path $TEMP_DIR "UDO-No-Script-main/UDO"
+$LATEST_PATH = Join-Path $TEMP_DIR "UDO-No-Script-Complete-main/UDO"
 if (-not (Test-Path $LATEST_PATH)) {
     Write-Host "Error: Could not find UDO folder in downloaded archive" -ForegroundColor Red
     Remove-Item -Recurse -Force $TEMP_DIR
