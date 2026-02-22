@@ -12,6 +12,15 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
+AUTO_YES=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -y|--yes) AUTO_YES=true; shift ;;
+        *) shift ;;
+    esac
+done
 
 cleanup() {
     rm -rf "$TEMP_DIR"
@@ -81,11 +90,6 @@ echo ""
 echo "Analyzing differences..."
 echo ""
 
-# Track changes
-ADDED=()
-UPDATED=()
-PRESERVED=()
-
 # System files to always update
 SYSTEM_FILES=(
     "ORCHESTRATOR.md" "COMMANDS.md" "START_HERE.md"
@@ -109,6 +113,10 @@ DATA_FOLDERS=(
     ".outputs" ".checkpoints" ".agents"
 )
 
+# Track changes
+ADDED=()
+UPDATED=()
+
 # Check system files
 for file in "${SYSTEM_FILES[@]}"; do
     if [ -f "$LATEST_PATH/$file" ]; then
@@ -120,7 +128,6 @@ for file in "${SYSTEM_FILES[@]}"; do
     fi
 done
 
-# Check for new folders/files in latest
 echo -e "${GREEN}Will ADD (new files):${NC}"
 for file in "${ADDED[@]}"; do
     echo "  + $file"
@@ -150,11 +157,17 @@ for file in "${DATA_FILES[@]}"; do
 done
 
 echo ""
-echo -e "${YELLOW}Proceed with upgrade? [y/N]${NC}"
-read -r response
-if [[ ! "$response" =~ ^[Yy]$ ]]; then
-    echo "Upgrade cancelled."
-    exit 0
+
+# Confirm unless --yes flag
+if [ "$AUTO_YES" = false ]; then
+    echo -e "${YELLOW}Proceed with upgrade? [y/N]${NC}"
+    read -r response
+    if [[ ! "$response" =~ ^[Yy]$ ]]; then
+        echo "Upgrade cancelled."
+        exit 0
+    fi
+else
+    echo -e "${YELLOW}Auto-confirming upgrade (--yes flag)${NC}"
 fi
 
 # Create backup
@@ -202,7 +215,6 @@ if [ -d "$LATEST_PATH/.rules" ]; then
             cp "$rule" "$UDO_PATH/.rules/$rulename"
         fi
     done
-    # Always update README
     cp "$LATEST_PATH/.rules/README.md" "$UDO_PATH/.rules/README.md" 2>/dev/null || true
 fi
 
