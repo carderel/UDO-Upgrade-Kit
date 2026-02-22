@@ -1,0 +1,70 @@
+{
+  "version": "4.5",
+  "description": "Defines which files are system (replace) vs data (preserve)",
+  
+  "system_files": [
+    "ORCHESTRATOR.md",
+    "COMMANDS.md",
+    "START_HERE.md",
+    "REASONING_CONTRACT.md",
+    "DEVILS_ADVOCATE.md",
+    "AUDIENCE_ANTICIPATION.md",
+    "EVIDENCE_PROTOCOL.md",
+    "TEACH_BACK_PROTOCOL.md",
+    "HANDOFF_PROMPT.md",
+    "OVERSIGHT_DASHBOARD.md",
+    "CAPABILITIES.json",
+    "VERSION",
+    "README.md",
+    ".agents/README.md",
+    ".checkpoints/README.md",
+    ".inputs/README.md",
+    ".inputs/manifest.json",
+    ".memory/README.md",
+    ".outputs/README.md",
+    ".outputs/.evidence/README.md",
+    ".project-catalog/README.md",
+    ".rules/README.md",
+    ".takeover/README.md",
+    ".templates/README.md",
+    ".tools/README.md"
+  ],
+  
+  "system_folders": [
+    ".templates",
+    ".takeover/agent-templates",
+    ".rules"
+  ],
+  
+  "data_files": [
+    "PROJECT_STATE.json",
+    "PROJECT_META.json",
+    "LESSONS_LEARNED.md",
+    "HARD_STOPS.md",
+    "NON_GOALS.md"
+  ],
+  
+  "data_folders": [
+    ".memory/canonical",
+    ".memory/working",
+    ".memory/disposable",
+    ".project-catalog/sessions",
+    ".project-catalog/decisions",
+    ".project-catalog/agents",
+    ".project-catalog/errors",
+    ".project-catalog/handoffs",
+    ".project-catalog/archive",
+    ".outputs/_drafts",
+    ".outputs/.evidence",
+    ".checkpoints",
+    ".agents",
+    ".agents/_archive"
+  ],
+  
+  "notes": {
+    "system_files": "Always replace with latest version",
+    "system_folders": "Replace all contents with latest",
+    "data_files": "Keep if exists and has been modified, otherwise update",
+    "data_folders": "Never touch contents - user data lives here"
+  }
+}
