@@ -1,6 +1,10 @@
 # UDO Upgrade Tool - PowerShell Version
 # Downloads latest UDO and safely merges with existing installation
 
+param(
+    [switch]$Yes
+)
+
 $ErrorActionPreference = "Stop"
 
 $REPO_URL = "https://github.com/carderel/UDO-No-Script-Complete"
@@ -119,18 +123,29 @@ foreach ($file in $DATA_FILES) {
 }
 
 Write-Host ""
-$response = Read-Host "Proceed with upgrade? [y/N]"
-if ($response -notmatch "^[Yy]$") {
-    Write-Host "Upgrade cancelled."
-    Remove-Item -Recurse -Force $TEMP_DIR
-    exit 0
+
+# Confirm unless -Yes flag
+if (-not $Yes) {
+    $response = Read-Host "Proceed with upgrade? [y/N]"
+    if ($response -notmatch "^[Yy]$") {
+        Write-Host "Upgrade cancelled."
+        Remove-Item -Recurse -Force $TEMP_DIR
+        exit 0
+    }
+} else {
+    Write-Host "Auto-confirming upgrade (-Yes flag)" -ForegroundColor Yellow
 }
 
-# Create backup
+# Create backup using robocopy to handle reserved names (nul, con, etc.)
 $BACKUP_DIR = ".udo-backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
 Write-Host ""
 Write-Host "Creating backup at $BACKUP_DIR..."
-Copy-Item -Recurse -Path $UDO_PATH -Destination $BACKUP_DIR
+
+# Use robocopy for Windows-safe copying (handles reserved names)
+$null = robocopy $UDO_PATH $BACKUP_DIR /E /R:0 /W:0 /NFL /NDL /NJH /NJS /XF nul con prn aux 2>$null
+if ($LASTEXITCODE -gt 7) {
+    Write-Host "Warning: Some files could not be backed up (reserved names). Continuing..." -ForegroundColor Yellow
+}
 
 # Perform upgrade
 Write-Host "Upgrading..."
@@ -163,7 +178,7 @@ if (Test-Path "$LATEST_PATH/.takeover/agent-templates") {
     Copy-Item -Force -Recurse "$LATEST_PATH/.takeover/agent-templates/*" "$UDO_PATH/.takeover/agent-templates/"
 }
 
-# Update .rules (only add missing, keep user customizations)
+# Update .rules (only add missing)
 if (Test-Path "$LATEST_PATH/.rules") {
     if (-not (Test-Path "$UDO_PATH/.rules")) { New-Item -ItemType Directory -Path "$UDO_PATH/.rules" -Force | Out-Null }
     Get-ChildItem -Path "$LATEST_PATH/.rules" -Filter "*.md" | ForEach-Object {
