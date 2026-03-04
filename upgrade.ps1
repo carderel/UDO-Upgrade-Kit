@@ -136,16 +136,11 @@ if (-not $Yes) {
     Write-Host "Auto-confirming upgrade (-Yes flag)" -ForegroundColor Yellow
 }
 
-# Create backup using robocopy to handle reserved names (nul, con, etc.)
+# Create backup
 $BACKUP_DIR = ".udo-backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
 Write-Host ""
 Write-Host "Creating backup at $BACKUP_DIR..."
-
-# Use robocopy for Windows-safe copying (handles reserved names)
-$null = robocopy $UDO_PATH $BACKUP_DIR /E /R:0 /W:0 /NFL /NDL /NJH /NJS /XF nul con prn aux 2>$null
-if ($LASTEXITCODE -gt 7) {
-    Write-Host "Warning: Some files could not be backed up (reserved names). Continuing..." -ForegroundColor Yellow
-}
+Copy-Item -Recurse -Path $UDO_PATH -Destination $BACKUP_DIR
 
 # Perform upgrade
 Write-Host "Upgrading..."
