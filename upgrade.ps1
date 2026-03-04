@@ -136,11 +136,18 @@ if (-not $Yes) {
     Write-Host "Auto-confirming upgrade (-Yes flag)" -ForegroundColor Yellow
 }
 
-# Create backup
+# Create backup (robocopy handles Windows reserved device names like nul, con, prn)
 $BACKUP_DIR = ".udo-backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
 Write-Host ""
 Write-Host "Creating backup at $BACKUP_DIR..."
-Copy-Item -Recurse -Path $UDO_PATH -Destination $BACKUP_DIR
+$fullSource = (Resolve-Path $UDO_PATH).Path
+$fullDest = Join-Path (Get-Location).Path $BACKUP_DIR
+$reservedNames = @("nul", "con", "prn", "aux", "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9", "lpt1", "lpt2", "lpt3", "lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9")
+robocopy "$fullSource" "$fullDest" /E /DCOPY:T /COPY:DAT /R:0 /W:0 /XF $reservedNames /NFL /NDL /NJH /NJS /NC /NS 2>$null | Out-Null
+if ($LASTEXITCODE -ge 8) {
+    Write-Host "Backup failed (robocopy exit code: $LASTEXITCODE). Aborting upgrade." -ForegroundColor Red
+    exit 1
+}
 
 # Perform upgrade
 Write-Host "Upgrading..."
