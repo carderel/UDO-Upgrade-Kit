@@ -1,5 +1,5 @@
 {
-  "version": "4.8",
+  "version": "4.9",
   "description": "Defines which files are system (replace) vs data (preserve)",
   
   "system_files": [
@@ -63,6 +63,7 @@
     ".project-catalog/errors",
     ".project-catalog/handoffs",
     ".project-catalog/archive",
+    ".project-catalog/history",
     ".outputs/_drafts",
     ".outputs/.evidence",
     ".checkpoints",
