@@ -87,6 +87,7 @@ $DATA_FOLDERS = @(
     ".project-catalog/sessions", ".project-catalog/decisions",
     ".project-catalog/agents", ".project-catalog/errors",
     ".project-catalog/handoffs", ".project-catalog/archive",
+    ".project-catalog/history",
     ".outputs", ".checkpoints", ".agents"
 )
 
