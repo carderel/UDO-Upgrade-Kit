@@ -41,15 +41,18 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/carderel/UDO-Upgrade-K
 
 **REPLACED (system files):**
 - Core files: ORCHESTRATOR.md, COMMANDS.md, START_HERE.md, etc.
-- Protocol files: REASONING_CONTRACT.md, EVIDENCE_PROTOCOL.md, etc.
+- Protocol files: REASONING_CONTRACT.md, EVIDENCE_PROTOCOL.md, BRIDGE-PROTOCOL.md, etc.
 - All README.md files in subfolders
 - All templates in .templates/
+- Bridge templates in .bridge/templates/
+- Bridge adapters in .bridge/adapters/
 - Takeover agent templates in .takeover/agent-templates/
 
 **PRESERVED (your data):**
 - PROJECT_STATE.json (your current project)
 - PROJECT_META.json (your project info)
 - LESSONS_LEARNED.md, HARD_STOPS.md, NON_GOALS.md (if customized)
+- Bridge state (.bridge/bridge-state.json, .bridge/session-log.md)
 - Everything in .memory/ (your facts)
 - Everything in .project-catalog/ (your history)
 - Everything in .outputs/ (your deliverables)
